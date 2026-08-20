@@ -3,7 +3,7 @@
  * 联网时优先请求网络并写入缓存；离线/失败才回退缓存（依旧可离线看）
  * 不再需要手动 bump 版本号；检测到新 sw.js 浏览器会自动安装新版
  */
-const CACHE = "wb-workbench-v7";
+const CACHE = "wb-workbench-v8";
 const ASSETS = [
   "./",
   "./index.html",

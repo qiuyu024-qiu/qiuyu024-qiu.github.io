@@ -1256,3 +1256,23 @@ button { font: inherit; }
 .maint-foot-tip { font-size: 12.5px; color: #1a9e54; font-weight: 600; opacity: 0; transition: opacity .25s; }
 .maint-foot-tip.show { opacity: 1; }
 
+/* ============ 爆款热点 - 腾讯文档选题库入口 ============ */
+.hot-lib-banner {
+  display: flex; align-items: center; gap: 12px;
+  margin: 12px 16px 2px; padding: 12px 14px;
+  background: linear-gradient(135deg, #eaf3ff 0%, #f3ecff 100%);
+  border: 1px solid #d6e2fb; border-radius: 12px;
+  text-decoration: none; cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.hot-lib-banner:active { transform: scale(.985); }
+.hot-lib-banner:hover { box-shadow: 0 4px 14px rgba(80, 120, 220, .18); }
+.hlb-icon { font-size: 22px; line-height: 1; flex-shrink: 0; }
+.hlb-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.hlb-text b { font-size: 14px; color: #25325c; font-weight: 700; }
+.hlb-text small { font-size: 11.5px; color: #6a7aa0; line-height: 1.4; }
+.hlb-go {
+  flex-shrink: 0; font-size: 12.5px; font-weight: 700; color: #fff;
+  background: #3b78f0; border-radius: 8px; padding: 6px 11px;
+}
+
