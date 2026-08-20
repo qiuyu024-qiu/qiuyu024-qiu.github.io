@@ -1487,17 +1487,41 @@ ${escapeHtml(item.script)}
     renderHot();
   });
 
-  /* 腾讯文档选题库入口：在 PWA/手机浏览器内，target=_blank 有时会被拦截或静默失败。
-     改为强 JS 打开新窗口（同步阻止默认跳转），失败兜底为新标签页直跳。 */
-  $("#hotLibBanner").addEventListener("click", (e) => {
-    e.preventDefault();
-    const url = e.currentTarget.href;
-    const win = window.open(url, "_blank", "noopener,noreferrer");
-    if (!win) {
-      /* 兜底：直接 location 跳（浏览器拦截了弹窗时） */
-      window.location.href = url;
+  /* 腾讯文档选题库入口：微信内置浏览器会把 docs.qq.com 转 wxmpurl.cn 导致 404。
+     改为「复制链接到剪贴板 + 提示去系统浏览器打开」，永远能拿到 URL。 */
+  const TC_DOC_URL = "https://docs.qq.com/sheet/DYWFCQ1N2eGxET3Bu";
+  async function copyToClipboard(text) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (e) {}
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { return false; }
+  }
+  const hotCopy = $("#hotLibCopy");
+  if (hotCopy) hotCopy.addEventListener("click", async (e) => {
+    e.preventDefault(); e.stopPropagation();
+    const ok = await copyToClipboard(TC_DOC_URL);
+    const hint = $("#hotLibHint");
+    if (hint) {
+      hint.hidden = false;
+      hint.style.color = ok ? "#2a8a4c" : "#c0392b";
+      hint.querySelector("span").innerHTML = ok
+        ? "📋 链接已复制到剪贴板 — <b>请在系统浏览器（Safari / Chrome）粘贴打开</b>，不要在微信内置浏览器里点"
+        : "复制失败，请长按下方链接手动复制";
+      if (ok) setTimeout(() => { hint.hidden = true; }, 6000);
     }
   });
+  $("#hotLibBanner").addEventListener("click", (e) => { e.preventDefault(); });
   $("#hotBody").addEventListener("click", (e) => {
     const b = e.target.closest("[data-adapt]");
     if (b) {
@@ -1973,26 +1997,145 @@ ${escapeHtml(item.script)}
     $("#fileImportMaintain").addEventListener("change", function (e) {
       const file = e.target.files && e.target.files[0];
       if (!file) return;
-      const r = new FileReader();
-      r.onload = function () {
-        try {
-          const dump = JSON.parse(r.result);
-          if (typeof dump !== "object" || Array.isArray(dump)) throw new Error("not object");
-          /* 清空再写 */
-          Object.keys(dump).forEach(function (k) {
-            const v = dump[k];
-            if (v === null || v === undefined) return;
-            localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v));
-          });
-          /* 重新应用账号覆盖 + 重新渲染 */
-          applyAccountOverrides();
-          location.reload();
-        } catch (err) { alert("备份文件格式不对，无法导入：" + (err && err.message ? err.message : err)); }
-      };
-      r.readAsText(file);
+      handleImportFile(file, "maintain");
       e.target.value = "";
     });
   }
+
+  /* ============ 通用导出/导入（被「数据维护」+ 全站 FAB 复用） ============ */
+  function exportAllData() {
+    const dump = {};
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k) continue;
+        if (k.indexOf("wb_") === 0 || k.indexOf("gbad_") === 0) {
+          try { dump[k] = JSON.parse(localStorage.getItem(k)); }
+          catch (e) { dump[k] = localStorage.getItem(k); }
+        }
+      }
+    } catch (e) {}
+    const blob = new Blob([JSON.stringify(dump, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const ts = new Date().toISOString().replace(/[:T]/g, "-").slice(0, 16);
+    a.href = url; a.download = "探楼纪-全部数据-" + ts + ".json"; a.click();
+    URL.revokeObjectURL(url);
+    return Object.keys(dump).length;
+  }
+  function handleImportFile(file, which) {
+    const r = new FileReader();
+    r.onload = function () {
+      try {
+        const dump = JSON.parse(r.result);
+        if (typeof dump !== "object" || Array.isArray(dump)) throw new Error("not object");
+        Object.keys(dump).forEach(function (k) {
+          const v = dump[k];
+          if (v === null || v === undefined) return;
+          try { localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v)); }
+          catch (e) {}
+        });
+        applyAccountOverrides && applyAccountOverrides();
+        location.reload();
+      } catch (err) {
+        const msgBox = $("#bkMsg");
+        if (msgBox) {
+          msgBox.textContent = "✗ 备份文件格式不对，无法导入";
+          msgBox.classList.add("show", "err");
+        } else {
+          alert("备份文件格式不对，无法导入");
+        }
+      }
+    };
+    r.readAsText(file);
+  }
+  function listLocalDataSummary() {
+    const keys = [];
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && (k.indexOf("wb_") === 0 || k.indexOf("gbad_") === 0)) {
+          let size = 0;
+          try { size = (localStorage.getItem(k) || "").length; } catch (e) {}
+          keys.push({ k: k, kb: (size / 1024).toFixed(2) });
+        }
+      }
+    } catch (e) {}
+    return keys;
+  }
+  function paintBkStat() {
+    const stat = $("#bkStat");
+    if (!stat) return;
+    const items = listLocalDataSummary();
+    if (!items.length) {
+      stat.innerHTML = "本机未保存任何手动修改的数据<br/><small style=\"color:#a5a5a5\">先去「数据维护」填真实账号数据，或在各个页面手动修改内容</small>";
+      return;
+    }
+    stat.innerHTML = "本机已保存 <b>" + items.length + "</b> 组数据：<br/>" +
+      items.map(function (it) { return "<span class=\"wb-bk-chip\">" + escAttr(it.k) + " · " + it.kb + "KB</span>"; }).join(" ");
+  }
+
+  /* ============ 全站 FAB 备份按钮（任何页面都可见） ============ */
+  function openBkSheet() {
+    paintBkStat();
+    $("#bkMask").hidden = false;
+    $("#bkSheet").hidden = false;
+    document.body.style.overflow = "hidden";
+    const m = $("#bkMsg"); if (m) { m.textContent = ""; m.classList.remove("show", "err"); }
+  }
+  function closeBkSheet() {
+    $("#bkMask").hidden = true;
+    $("#bkSheet").hidden = true;
+    document.body.style.overflow = "";
+  }
+  const fab = $("#fabBackup");
+  if (fab) fab.addEventListener("click", openBkSheet);
+  const bkMask = $("#bkMask");
+  if (bkMask) bkMask.addEventListener("click", closeBkSheet);
+  const bkClose = $("#bkClose");
+  if (bkClose) bkClose.addEventListener("click", closeBkSheet);
+  const bkExport = $("#bkExportAll");
+  if (bkExport) bkExport.addEventListener("click", function () {
+    const n = exportAllData();
+    const msg = $("#bkMsg");
+    if (msg) {
+      msg.textContent = "✓ 已导出 " + n + " 组数据到 JSON";
+      msg.classList.add("show"); msg.classList.remove("err");
+    }
+    paintBkStat();
+  });
+  const bkImport = $("#bkImportAll");
+  if (bkImport) bkImport.addEventListener("click", function () { $("#bkFile").click(); });
+  const bkFile = $("#bkFile");
+  if (bkFile) bkFile.addEventListener("change", function (e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    handleImportFile(file, "fab");
+    e.target.value = "";
+  });
+  const bkGoto = $("#bkGotoMaintain");
+  if (bkGoto) bkGoto.addEventListener("click", function () {
+    closeBkSheet();
+    const target = document.querySelector('.menu-item[data-key="maintain"]');
+    if (target) target.click();
+  });
+  const bkReset = $("#bkReset");
+  if (bkReset) bkReset.addEventListener("click", function () {
+    if (!confirm("确定清空本机所有手动修改的数据？（账号覆盖/指标/作品/笔记/项目/发布计划/灵感等）\n建议先「导出全部」备份。")) return;
+    try {
+      const toDel = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && (k.indexOf("wb_") === 0 || k.indexOf("gbad_") === 0)) toDel.push(k);
+      }
+      toDel.forEach(function (k) { localStorage.removeItem(k); });
+      location.reload();
+    } catch (e) {}
+  });
+  /* ESC 关闭 */
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !$("#bkSheet").hidden) closeBkSheet();
+  });
 
   /* 首屏 */
   applyAccountOverrides();

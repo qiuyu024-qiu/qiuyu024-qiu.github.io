@@ -634,14 +634,17 @@
             换一批热点
           </button>
         </header>
-        <a class="hot-lib-banner" id="hotLibBanner" href="https://docs.qq.com/sheet/DYWFCQ1N2eGxET3Bu" target="_blank" rel="noopener">
+        <div class="hot-lib-banner" id="hotLibBanner">
           <span class="hlb-icon" aria-hidden="true">📊</span>
           <span class="hlb-text">
             <b>每日热点选题库</b>
             <small>腾讯文档 · 每天 9 点自动累积抖音 / 视频号 / 小红书热点</small>
           </span>
-          <span class="hlb-go">打开 ↗</span>
-        </a>
+          <button class="btn-mini hlb-copy" id="hotLibCopy" type="button">复制链接</button>
+        </div>
+        <div class="hot-lib-hint" id="hotLibHint" hidden>
+          <span>📋 链接已复制到剪贴板 — <b>请在系统浏览器（如 Safari / Chrome）粘贴打开</b>，不要在微信内置浏览器里点</span>
+        </div>
         <div class="page-body" id="hotBody"></div>
       </section>
 
@@ -770,6 +773,44 @@
       </section>
 
     </main>
+  </div>
+
+  <!-- 全站浮动备份 FAB（任何页面都可见，从这里一键导出/导入所有手动修改的数据） -->
+  <button class="wb-fab-backup" id="fabBackup" type="button" aria-label="备份管理">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="12" cy="5" rx="9" ry="3"/>
+      <path d="M3 5v14a9 3 0 0 0 18 0V5"/>
+      <path d="M3 12a9 3 0 0 0 18 0"/>
+    </svg>
+    <span class="wb-fab-tip">备份</span>
+  </button>
+
+  <!-- 全站备份弹层 -->
+  <div class="wb-bk-mask" id="bkMask" hidden></div>
+  <div class="wb-bk-sheet" id="bkSheet" hidden role="dialog" aria-label="数据备份">
+    <div class="wb-bk-head">
+      <div>
+        <b>💾 数据备份</b>
+        <small>所有手动修改的内容（账号数据、首页指标、作品清单、笔记、灵感、项目、发布计划…）都存在你浏览器本地</small>
+      </div>
+      <button class="wb-bk-close" id="bkClose" type="button" aria-label="关闭">✕</button>
+    </div>
+    <div class="wb-bk-stat" id="bkStat"></div>
+    <div class="wb-bk-actions">
+      <button class="btn-bk-primary" id="bkExportAll" type="button">导出全部（JSON）</button>
+      <button class="btn-bk" id="bkImportAll" type="button">从 JSON 导入</button>
+      <input type="file" id="bkFile" accept="application/json" style="display:none" />
+    </div>
+    <div class="wb-bk-tip">
+      • 「导出全部」把所有数据打包成一个 JSON 文件（带时间戳），建议发到自己的微信收藏或网盘<br/>
+      • 「从 JSON 导入」一键还原所有内容（导入前会先清空本机数据）<br/>
+      • 想要更精细化（按平台/按类别）编辑，请进入「数据维护」页
+    </div>
+    <div class="wb-bk-foot">
+      <button class="btn-bk" id="bkGotoMaintain" type="button">进入「数据维护」→</button>
+      <button class="btn-bk-danger" id="bkReset" type="button">清空本机数据</button>
+    </div>
+    <div class="wb-bk-msg" id="bkMsg"></div>
   </div>
 
   <script src="app-data.js"></script>
