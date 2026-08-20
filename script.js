@@ -650,32 +650,8 @@ ${escapeHtml(item.script)}
     const existing = loadWorks();
     if (existing.length > 0) { localStorage.setItem(SEED_WORKS_KEY, "1"); return; }
 
-    // 基于搜索结果推演的探楼纪作品数据（3月-8月）
-    const seedData = [
-      { title: "这里是腾讯最新总部基地—企鹅岛", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-03-15", views: 85000, likes: 700, comments: 85, shares: 120, collects: 200 },
-      { title: "深圳甲级写字楼租金跌至十年新低，现在该不该抄底？", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-03-22", views: 42000, likes: 200, comments: 48, shares: 35, collects: 90 },
-      { title: "前海写字楼空置率30%？实地探访告诉你真相", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-03-29", views: 38000, likes: 180, comments: 52, shares: 28, collects: 70 },
-      { title: "福田CBD京地大厦实地探楼 · 双地铁口甲级写字楼", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-04-05", views: 25000, likes: 100, comments: 25, shares: 18, collects: 50 },
-      { title: "南山科技园打工人通勤真相 · 月薪25k够不够花", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-04-12", views: 55000, likes: 300, comments: 90, shares: 60, collects: 110 },
-      { title: "创业第一次租办公室 · 避坑指南", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-04-19", views: 32000, likes: 150, comments: 40, shares: 45, collects: 80 },
-      { title: "抖音深圳总部正式启用 · 后海中心实地探访", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-04-26", views: 68000, likes: 500, comments: 70, shares: 90, collects: 150 },
-      { title: "港人北上租办公室 · 跨境创业选址指南", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-05-03", views: 28000, likes: 90, comments: 30, shares: 22, collects: 55 },
-      { title: "城脉中心388米 · 罗湖新地标探楼", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-05-10", views: 35000, likes: 160, comments: 35, shares: 30, collects: 65 },
-      { title: "前海写字楼大宗交易回暖 · 谁在悄悄抄底？", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-05-17", views: 30000, likes: 100, comments: 28, shares: 25, collects: 50 },
-      { title: "宝安北写字楼异动 · 产业资本加注真相", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-05-24", views: 22000, likes: 70, comments: 20, shares: 15, collects: 40 },
-      { title: "企鹅岛员工公寓2000元月租 · 实地探访", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-05-31", views: 72000, likes: 600, comments: 100, shares: 80, collects: 180 },
-      { title: "深圳写字楼空置率24.9% · 仲量联行数据解读", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-06-07", views: 18000, likes: 60, comments: 15, shares: 12, collects: 30 },
-      { title: "AI企业爆发式租赁 · 前海科技园走访", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-06-14", views: 26000, likes: 90, comments: 22, shares: 18, collects: 45 },
-      { title: "深港通关后楼市真相 · 港人买房占比仅6%", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-06-21", views: 40000, likes: 200, comments: 55, shares: 40, collects: 85 },
-      { title: "90后接手家族公司 · 第一件事换办公室", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-06-28", views: 33000, likes: 140, comments: 38, shares: 30, collects: 60 },
-      { title: "深圳甲级写字楼租金144元/㎡ · 十年跌40%", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-07-05", views: 45000, likes: 220, comments: 60, shares: 50, collects: 95 },
-      { title: "跨境电商扎堆入驻前海 · 实地探访租赁现场", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-07-12", views: 29000, likes: 110, comments: 25, shares: 20, collects: 48 },
-      { title: "京地大厦精装办公室120㎡月租1万出头值不值", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-07-19", views: 20000, likes: 70, comments: 18, shares: 14, collects: 35 },
-      { title: "前海AI产业租赁爆发 · 算力公司整层拿下", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-07-26", views: 36000, likes: 150, comments: 32, shares: 28, collects: 58 },
-      { title: "APEC峰会落地深圳 · 商办市场迎来周期拐点？", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-08-02", views: 50000, likes: 250, comments: 65, shares: 55, collects: 100 },
-      { title: "深圳写字楼2026上半年净吸纳量17.5万㎡", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-08-09", views: 24000, likes: 80, comments: 20, shares: 16, collects: 38 },
-      { title: "TMT行业占深圳写字楼租赁32% · 谁在撑场？", link: "https://v.douyin.com/vI6asPT-97Y/", date: "2026-08-16", views: 31000, likes: 120, comments: 28, shares: 22, collects: 48 }
-    ];
+    // 真实作品数据（来自 app-data.js 的 window.SEED_WORKS，共 370 条，2022-03 至 2026-08）
+    const seedData = (window.SEED_WORKS && window.SEED_WORKS.length) ? window.SEED_WORKS : [];
 
     const withMeta = seedData.map(w => ({ ...w, addedAt: new Date().toISOString() }));
     saveWorks(withMeta);
@@ -1020,7 +996,7 @@ ${escapeHtml(item.script)}
         <div class="chart-title">平台分发策略 · 内容分配比例与优先级</div>
         <div class="pf-bar">${bars}</div>
         <div class="pf-legend">${legend}</div>
-        <div class="pf-summary">主阵地（抖音 + 视频号）合计 <b>${primaryTotal}%</b> 资源 · 辅助平台（头条 + 小红书）合计 <b>${100 - primaryTotal}%</b></div>
+        <div class="pf-summary">主阵地（抖音 + 视频号）合计 <b>${primaryTotal}%</b> 资源 · 辅助平台（小红书）合计 <b>${100 - primaryTotal}%</b></div>
         <div class="pf-principle">
           <div class="pf-principle-title">资源集中原则</div>
           <ul>${principle}</ul>
@@ -1051,7 +1027,7 @@ ${escapeHtml(item.script)}
         <div class="profile-grid">
           <div class="profile-item"><span class="profile-key">首发平台</span><span class="profile-val">抖音（P0）</span></div>
           <div class="profile-item"><span class="profile-key">同步分发</span><span class="profile-val">视频号（P0）</span></div>
-          <div class="profile-item"><span class="profile-key">二创跟发</span><span class="profile-val">头条 / 小红书（P2/P3）</span></div>
+          <div class="profile-item"><span class="profile-key">二创跟发</span><span class="profile-val">小红书（P2）</span></div>
           <div class="profile-item"><span class="profile-key">本周主题</span><span class="profile-val">租金新低 + 企鹅岛 + APEC</span></div>
         </div>
       </div>
@@ -1313,7 +1289,7 @@ ${escapeHtml(item.script)}
               <a class="ac-link" href="${escapeHtml(a.url)}" target="_blank" rel="noopener">打开 ↗</a></div>
           </div>`;
         }).join("") + `</div>
-        <div class="pf-summary">抖音 + 视频号为双主阵地，承担 ${plan.primary.reduce((s,k)=>s+(plan.items.find(x=>x.key===k)||{ratio:0}).ratio,0)}% 原创产能；头条 / 小红书二创分发，不占原创。</div>
+        <div class="pf-summary">抖音 + 视频号为双主阵地，承担 ${plan.primary.reduce((s,k)=>s+(plan.items.find(x=>x.key===k)||{ratio:0}).ratio,0)}% 原创产能；小红书二创分发，不占原创。</div>
       </div>`;
   }
 
@@ -1396,7 +1372,7 @@ ${escapeHtml(item.script)}
           <span class="sch-status st-${p.status}">${escapeHtml(p.status)}</span>
         </div>
       </div>`;
-    }).join("") + `<div class="pf-summary">排期以抖音 / 视频号原创为主（${plan.filter(p=>["douyin","shipinhao"].includes(p.primary)).length} 天），头条 / 小红书二创跟发（${plan.filter(p=>["toutiao","xiaohongshu"].includes(p.primary)).length} 天）。</div>`;
+    }).join("") + `<div class="pf-summary">排期以抖音 / 视频号原创为主（${plan.filter(p=>["douyin","shipinhao"].includes(p.primary)).length} 天），小红书二创跟发（${plan.filter(p=>["xiaohongshu"].includes(p.primary)).length} 天）。</div>`;
   }
 
   /* 发布器交互 */
@@ -1746,7 +1722,7 @@ ${escapeHtml(item.script)}
       <div class="chart-block">
         <div class="chart-title">四平台数据汇总</div>
         <div class="table-wrap"><table class="work-table"><thead>${head}</thead><tbody>${trs}</tbody></table></div>
-        <div class="pf-summary">抖音 + 视频号贡献主要播放与互动；视频号互动率最高（社交转发），适合做私域沉淀。头条 / 小红书为长尾补充。</div>
+        <div class="pf-summary">抖音 + 视频号贡献主要播放与互动；视频号互动率最高（社交转发），适合做私域沉淀。小红书为长尾补充。</div>
       </div>`;
   }
 
