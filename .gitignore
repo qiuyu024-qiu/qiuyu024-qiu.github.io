@@ -1,0 +1,5 @@
+# 本地记忆/环境，不进仓库
+.workbuddy/
+node_modules/
+*.log
+.DS_Store

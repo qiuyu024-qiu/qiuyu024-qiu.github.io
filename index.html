@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#111418" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="选题灵感" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <title>选题灵感 · 大湾区商办工作台 v2</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <!-- ============ 左侧导航 ============ -->
+    <aside class="sidebar" id="sidebar">
+      <!-- 账号区 -->
+      <div class="account">
+        <div class="avatar" aria-hidden="true">🏢</div>
+        <div class="account-info">
+          <div class="account-name">大湾区商办观察</div>
+          <div class="account-bio">深港写字楼 · 打工人视角</div>
+        </div>
+      </div>
+
+      <!-- 基础工作台 -->
+      <div class="menu-group">
+        <div class="menu-group-title">基础工作台</div>
+
+        <a class="menu-item" data-key="home" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/>
+              <rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>
+            </svg>
+          </span>
+          <span class="mi-label">首页概览</span>
+        </a>
+
+        <a class="menu-item" data-key="news" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="14" height="14" rx="1"/><path d="M7 9h8M7 13h8M7 17h5"/>
+              <path d="M19 9h2v9a2 2 0 0 1-2 2h-2"/>
+            </svg>
+          </span>
+          <span class="mi-label">行业资讯</span>
+        </a>
+
+        <a class="menu-item" data-key="note" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 5a2 2 0 0 1 2-2h10l4 4v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
+              <path d="M9 12h6M9 16h4"/>
+            </svg>
+          </span>
+          <span class="mi-label">选题笔记</span>
+        </a>
+
+        <a class="menu-item" data-key="media" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="6" width="18" height="12" rx="2"/>
+              <path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/>
+            </svg>
+          </span>
+          <span class="mi-label">自媒体管理</span>
+        </a>
+
+        <a class="menu-item" data-key="publish" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19V5"/><path d="M5 12l7-7 7 7"/>
+              <path d="M5 21h14"/>
+            </svg>
+          </span>
+          <span class="mi-label">内容发布</span>
+        </a>
+
+        <a class="menu-item" data-key="review" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21V10M9 21V4M15 21v-7M21 21V8"/>
+            </svg>
+          </span>
+          <span class="mi-label">内容复盘</span>
+        </a>
+      </div>
+
+      <!-- 内容运营 -->
+      <div class="menu-group">
+        <div class="menu-group-title">内容运营</div>
+
+        <a class="menu-item active" data-key="inspiration" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18h6"/><path d="M10 21h4"/>
+              <path d="M12 3a6 6 0 0 0-3.5 10.9c.9.7 1.5 1.7 1.5 2.8V18h4v-1.3c0-1.1.6-2.1 1.5-2.8A6 6 0 0 0 12 3z"/>
+            </svg>
+          </span>
+          <span class="mi-label">选题灵感</span>
+        </a>
+
+        <a class="menu-item" data-key="hot" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2c1 2 4 4 4 8a5 5 0 0 1-10 0c0-2 1-3 1-3s-1 5 3 5c0-3-2-6 2-10z"/>
+              <path d="M5 14a7 7 0 0 0 14 0"/>
+            </svg>
+          </span>
+          <span class="mi-label">爆款热点</span>
+        </a>
+
+        <a class="menu-item" data-key="compare" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="7" height="14" rx="1"/><rect x="14" y="5" width="7" height="14" rx="1"/>
+              <path d="M10 12h4"/>
+            </svg>
+          </span>
+          <span class="mi-label">内容对照</span>
+        </a>
+      </div>
+
+      <!-- 专业工作 -->
+      <div class="menu-group">
+        <div class="menu-group-title">专业工作</div>
+
+        <a class="menu-item" data-key="project" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 7h6l2 2h10v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            </svg>
+          </span>
+          <span class="mi-label">项目管理</span>
+        </a>
+
+        <a class="menu-item" data-key="personal" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
+          <span class="mi-label">个人分析</span>
+        </a>
+
+        <a class="menu-item" data-key="stats" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 12l4-3"/>
+              <circle cx="12" cy="12" r="1" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="mi-label">数据统计</span>
+        </a>
+
+        <a class="menu-item" data-key="maintain" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20a8 8 0 1 0-8-8"/><path d="M12 20v-8"/><path d="M12 12l5-3"/>
+              <path d="M4 12H2M22 12h-2M12 2v2"/>
+            </svg>
+          </span>
+          <span class="mi-label">数据维护</span>
+        </a>
+      </div>
+
+      <!-- 效率与关怀 -->
+      <div class="menu-group">
+        <div class="menu-group-title">效率与关怀</div>
+
+        <a class="menu-item" data-key="care" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+            </svg>
+          </span>
+          <span class="mi-label">自我关怀</span>
+        </a>
+
+        <a class="menu-item" data-key="lib" href="#">
+          <span class="mi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 5a2 2 0 0 1 2-2h3v16H6a2 2 0 0 0-2 2z"/>
+              <path d="M11 3h3v18h-3z"/><path d="M16 3h3l1 18h-4z"/>
+            </svg>
+          </span>
+          <span class="mi-label">作业素材库</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- ============ 右侧主内容 ============ -->
+    <main class="main">
+
+      <!-- ====== 页面：选题灵感 ====== -->
+      <section class="page page-active" id="page-inspiration">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">选题灵感</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text" id="dateText">2026年 8月 19日 星期二</span>
+            </div>
+          </div>
+          <div class="head-actions">
+            <button class="btn-ghost" id="btnTrending" type="button" title="把今日热搜关键词转成候选选题卡加入灵感列表">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+              实时热搜
+            </button>
+            <button class="btn-ghost" id="btnAddInspiration" type="button">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              手动添加
+            </button>
+            <button class="btn-refresh" id="btnRefresh" type="button">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 4v4h-4"/>
+                <path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 20v-4h4"/>
+              </svg>
+              换一批灵感
+            </button>
+          </div>
+        </header>
+
+        <!-- 手动添加面板 -->
+        <div class="add-panel" id="inspirationPanel" style="display:none;">
+          <div class="add-panel-title">手动添加选题</div>
+          <div class="add-panel-fields">
+            <input class="field-input" id="inspTitle" type="text" placeholder="选题标题（必填）" />
+            <textarea id="inspProblem" class="paste-area" rows="2" placeholder="🔍 问题：核心痛点/事件简述"></textarea>
+            <textarea id="inspPain" class="paste-area" rows="2" placeholder="❤️ 痛苦：受众情绪、困扰点"></textarea>
+            <textarea id="inspHope" class="paste-area" rows="2" placeholder="🌱 希望：内容给到的价值、情绪出口"></textarea>
+            <textarea id="inspHook" class="paste-area" rows="2" placeholder="🔗 钩子：短视频开篇抓人话术"></textarea>
+            <textarea id="inspScript" class="paste-area" rows="3" placeholder="短视频口播文案（可留空，AI 自动生成）"></textarea>
+            <input class="field-input" id="inspTags" type="text" placeholder="抖音话题（用空格分隔，例如 #深圳写字楼 #探楼纪）" />
+          </div>
+          <div class="add-panel-actions">
+            <button class="btn-mini" id="btnCancelInspiration" type="button">取消</button>
+            <button class="btn-refresh btn-small" id="btnSaveInspiration" type="button">加入灵感</button>
+          </div>
+        </div>
+
+        <div class="cards-wrap" id="cardsWrap"></div>
+      </section>
+
+      <!-- ====== 页面：内容复盘 ====== -->
+      <section class="page" id="page-review">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">内容复盘</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">抖音作品数据 · 手动录入</span>
+            </div>
+          </div>
+          <button class="btn-refresh" id="btnAddWork" type="button">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+            添加作品
+          </button>
+        </header>
+
+        <!-- 账号信息条 -->
+        <div class="account-bar" id="accountBar">
+          <div class="account-bar-left">
+            <div class="account-bar-avatar">📺</div>
+            <div>
+              <div class="account-bar-name">探楼纪</div>
+              <div class="account-bar-link">
+                <a href="https://v.douyin.com/vI6asPT-97Y/" target="_blank" rel="noopener">v.douyin.com/vI6asPT-97Y/ ↗</a>
+              </div>
+            </div>
+          </div>
+          <div class="account-bar-right">
+            <span class="stat-pill">作品 <b id="statWorks">0</b></span>
+            <span class="stat-pill">总播放 <b id="statViews">0</b></span>
+            <span class="stat-pill">总点赞 <b id="statLikes">0</b></span>
+          </div>
+        </div>
+
+        <!-- 添加作品面板（默认隐藏） -->
+        <div class="add-panel" id="addPanel" style="display:none;">
+          <div class="add-panel-title">添加作品</div>
+          <div class="add-panel-hint">粘贴抖音分享文案，自动解析标题和链接（例：<i>长按复制此条消息，打开抖音搜索，查看TA的更多作品。 https://v.douyin.com/xxx/</i>）</div>
+          <textarea id="pasteArea" class="paste-area" rows="3" placeholder="粘贴抖音分享文案，或直接输入作品标题和链接..."></textarea>
+          <div class="add-panel-fields">
+            <input class="field-input" id="fTitle" type="text" placeholder="作品标题" />
+            <input class="field-input" id="fLink" type="text" placeholder="抖音链接 https://v.douyin.com/..." />
+            <input class="field-input" id="fDate" type="date" />
+            <input class="field-input" id="fViews" type="number" min="0" placeholder="播放量" />
+            <input class="field-input" id="fLikes" type="number" min="0" placeholder="点赞" />
+            <input class="field-input" id="fComments" type="number" min="0" placeholder="评论" />
+            <input class="field-input" id="fShares" type="number" min="0" placeholder="转发" />
+            <input class="field-input" id="fCollects" type="number" min="0" placeholder="收藏" />
+            <textarea id="fHotComments" class="paste-area" rows="3" placeholder="热门评论（每行一条，格式：点赞数|评论内容  例如 328|企鹅岛到底值不值？想去看看）"></textarea>
+          </div>
+          <div class="add-panel-actions">
+            <button class="btn-mini" id="btnParsePaste" type="button">解析粘贴</button>
+            <button class="btn-mini" id="btnCancelAdd" type="button">取消</button>
+            <button class="btn-refresh btn-small" id="btnSaveWork" type="button">保存作品</button>
+          </div>
+        </div>
+
+        <!-- 作品列表表格 -->
+        <div class="table-wrap">
+          <table class="work-table" id="workTable">
+            <thead>
+              <tr>
+                <th>标题</th>
+                <th>发布日期</th>
+                <th>播放</th>
+                <th>点赞</th>
+                <th>评论</th>
+                <th>转发</th>
+                <th>互动率</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="workTbody"></tbody>
+          </table>
+          <div class="empty-tip" id="emptyTip">暂无作品记录，点击右上角「添加作品」开始录入</div>
+        </div>
+      </section>
+
+      <!-- ====== 页面：个人分析 ====== -->
+      <section class="page" id="page-personal">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">个人分析</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">基于内容复盘录入数据</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- 指标卡 -->
+        <div class="metrics-grid" id="metricsGrid">
+          <div class="metric-card">
+            <div class="metric-label">总播放量</div>
+            <div class="metric-value" id="mViews">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">总互动数</div>
+            <div class="metric-value" id="mInteract">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">平均互动率</div>
+            <div class="metric-value" id="mRate">0%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">作品数</div>
+            <div class="metric-value" id="mCount">0</div>
+          </div>
+        </div>
+
+        <!-- 爆款 TOP3 -->
+        <div class="chart-block">
+          <div class="chart-title">爆款作品 TOP5</div>
+          <div class="chart-bars" id="topBars"></div>
+        </div>
+
+        <!-- 发布趋势 -->
+        <div class="chart-block">
+          <div class="chart-title">播放量分布</div>
+          <div class="chart-bars" id="trendBars"></div>
+        </div>
+
+        <div class="empty-tip" id="analysisEmpty">请先在「内容复盘」录入作品数据</div>
+      </section>
+
+      <!-- ====== 页面：内容对照 ====== -->
+      <section class="page" id="page-compare">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">内容对照</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">探楼纪 · 账号调性分析 + 爆款文案推荐</span>
+            </div>
+          </div>
+          <button class="btn-refresh" id="btnRefreshCompare" type="button">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 4v4h-4"/>
+              <path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 20v-4h4"/>
+            </svg>
+            换一批文案
+          </button>
+        </header>
+
+        <!-- 内容对照优化器 -->
+        <div class="chart-block rewrite-tool">
+          <div class="chart-title">内容对照优化器 · 原文一键改写为爆款</div>
+          <div class="rewrite-grid">
+            <div class="rewrite-side">
+              <div class="rewrite-label">① 粘贴原始文案</div>
+              <textarea id="rewriteInput" class="rewrite-input" placeholder="例如：这里是深圳后海，是深圳最寸土寸金的地方之一，聚集了大量科技和金融企业……"></textarea>
+              <div class="rewrite-opt">
+                <span class="rewrite-label">改写类型</span>
+                <div class="seg" id="rewriteType">
+                  <button class="seg-btn active" data-v="daily" type="button">日常流量</button>
+                  <button class="seg-btn" data-v="deep" type="button">深度资讯</button>
+                </div>
+              </div>
+              <div class="rewrite-actions">
+                <button class="btn-refresh" id="btnRewrite" type="button">按调性改写</button>
+                <button class="btn-ghost" id="btnCopyPrompt" type="button">复制改写指令</button>
+              </div>
+              <div class="rewrite-tip">本地启发式草稿即时可见；想要探楼纪级口语精修，点「复制改写指令」把原文+模板丢给 AI。</div>
+            </div>
+            <div class="rewrite-side">
+              <div class="rewrite-label">② 改写后爆款文案</div>
+              <div class="rewrite-output" id="rewriteOutput">
+                <div class="empty-tip">在左侧粘贴原文，点「按调性改写」生成草稿。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 账号调性画像 -->
+        <div class="chart-block">
+          <div class="chart-title">账号调性画像</div>
+          <div class="profile-grid">
+            <div class="profile-item"><span class="profile-key">账号名</span><span class="profile-val">探楼纪</span></div>
+            <div class="profile-item"><span class="profile-key">所属机构</span><span class="profile-val">吉办科技旗下商办IP</span></div>
+            <div class="profile-item"><span class="profile-key">内容风格</span><span class="profile-val">剧情+探楼 · 实地探访叙事</span></div>
+            <div class="profile-item"><span class="profile-key">赛道定位</span><span class="profile-val">深圳商办/写字楼/企业选址</span></div>
+            <div class="profile-item"><span class="profile-key">目标受众</span><span class="profile-val">企业主 · 选址决策人 · 打工人</span></div>
+            <div class="profile-item"><span class="profile-key">视频时长</span><span class="profile-val">40-90秒（短平快干货向）</span></div>
+            <div class="profile-item"><span class="profile-key">文案口吻</span><span class="profile-val">实地探访者口吻 · 第一人称叙事 · 悬念开篇</span></div>
+            <div class="profile-item"><span class="profile-key">常用话题</span><span class="profile-val">#企业选址 #商业地产 #深圳 #写字楼</span></div>
+          </div>
+        </div>
+
+        <!-- 内容规律分析 -->
+        <div class="chart-block">
+          <div class="chart-title">内容规律分析（3月-8月）</div>
+          <div class="profile-grid">
+            <div class="profile-item"><span class="profile-key">爆款特征</span><span class="profile-val">地标探楼 + 数据反差 + 选址干货</span></div>
+            <div class="profile-item"><span class="profile-key">高频话题</span><span class="profile-val">腾讯企鹅岛 · 福田CBD · 前海 · 南山科技园</span></div>
+            <div class="profile-item"><span class="profile-key">互动峰值</span><span class="profile-val">700+点赞（地标首发探楼类）</span></div>
+            <div class="profile-item"><span class="profile-key">更新频率</span><span class="profile-val">每周2-3条 · 探楼+资讯交替</span></div>
+            <div class="profile-item"><span class="profile-key">互动中位</span><span class="profile-val">70-200点赞（常规探楼选题）</span></div>
+            <div class="profile-item"><span class="profile-key">合作矩阵</span><span class="profile-val">@吉办托管 @深港商业地产投资秘闻</span></div>
+          </div>
+        </div>
+
+        <!-- 爆款文案推荐区 -->
+        <div class="chart-block">
+          <div class="chart-title">爆款文案推荐 · 符合探楼纪调性</div>
+          <div class="cards-wrap" id="compareCardsWrap"></div>
+        </div>
+      </section>
+
+      <!-- ====== 页面：首页概览 ====== -->
+      <section class="page" id="page-home">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">首页概览</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">平台分发策略 · 全局视图</span>
+            </div>
+          </div>
+        </header>
+        <div class="page-body" id="homeBody"></div>
+      </section>
+
+      <!-- ====== 页面：行业资讯 ====== -->
+      <section class="page" id="page-news">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">行业资讯</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">深港地产 · 写字楼 · 实时追踪</span>
+            </div>
+          </div>
+        </header>
+        <div class="page-body" id="newsBody"></div>
+      </section>
+
+      <!-- ====== 页面：选题笔记 ====== -->
+      <section class="page" id="page-note">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">选题笔记</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">灵感随手记 · 标注首发平台</span>
+            </div>
+          </div>
+          <button class="btn-refresh" id="btnAddNote" type="button">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            记一笔
+          </button>
+        </header>
+        <div class="add-panel" id="notePanel" style="display:none;">
+          <textarea id="noteInput" class="paste-area" rows="2" placeholder="记下灵感，例如：企鹅岛周边二手写字楼会不会跟涨？"></textarea>
+          <div class="add-panel-fields">
+            <input class="field-input" id="noteLink" type="text" placeholder="链接（粘贴抖音/公众号链接自动识别）" />
+            <textarea id="noteDetail" class="paste-area" rows="2" placeholder="扩展内容（行业数据/背景/触发事件等）"></textarea>
+            <select class="field-input" id="notePlatform">
+              <option value="douyin">抖音首发</option>
+              <option value="shipinhao">视频号首发</option>
+              <option value="toutiao">头条二创</option>
+              <option value="xiaohongshu">小红书二创</option>
+            </select>
+          </div>
+          <div class="add-panel-actions">
+            <button class="btn-mini" id="btnCancelNote" type="button">取消</button>
+            <button class="btn-refresh btn-small" id="btnSaveNote" type="button">保存</button>
+          </div>
+        </div>
+        <div class="page-body" id="noteBody"></div>
+      </section>
+
+      <!-- ====== 页面：自媒体管理 ====== -->
+      <section class="page" id="page-media">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">自媒体管理</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">四平台账号矩阵 · 抖音 + 视频号为主</span>
+            </div>
+          </div>
+        </header>
+        <div class="page-body" id="mediaBody"></div>
+      </section>
+
+      <!-- ====== 页面：创作发布中心（整合抖音创作者中心） ====== -->
+      <section class="page" id="page-publish">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">创作发布中心</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>本地草稿</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">对标抖音创作者中心 · 多平台一键分发</span>
+            </div>
+          </div>
+          <a class="btn-refresh" id="btnOpenCreator" href="https://creator.douyin.com/creator-micro/home" target="_blank" rel="noopener" type="button">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M19 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4"/></svg>
+            去抖音创作者中心
+          </a>
+        </header>
+
+        <!-- 发布器（对标创作者中心发布面板） -->
+        <div class="composer">
+          <div class="composer-title">发布器 · 填写后保存草稿 / 复制文案去创作者中心发布</div>
+          <input class="field-input composer-title-input" id="cTitle" type="text" placeholder="视频标题（建议带悬念钩子，如：深圳写字楼租金跌到144元/㎡，到底谁在笑？）" />
+          <textarea class="composer-text" id="cBody" rows="4" placeholder="口播文案 / 正文（口语化、短句、提问开篇，结尾留互动）"></textarea>
+          <div class="composer-tags" id="cTagsWrap">
+            <span class="ctag" data-t="#深圳写字楼">#深圳写字楼 <button class="ctag-x" data-x="#深圳写字楼">×</button></span>
+            <span class="ctag" data-t="#商办">#商办 <button class="ctag-x" data-x="#商办">×</button></span>
+            <span class="ctag" data-t="#深港楼市">#深港楼市 <button class="ctag-x" data-x="#深港楼市">×</button></span>
+          </div>
+          <div class="composer-tag-add">
+            <input class="field-input" id="cTagInput" type="text" placeholder="加话题标签，如 大湾区打工人" />
+            <button class="btn-mini" id="btnAddTag" type="button">加标签</button>
+          </div>
+
+          <div class="composer-row">
+            <span class="composer-label">发布平台</span>
+            <div class="seg" id="cPlatforms">
+              <button class="seg-btn active" data-v="douyin" type="button">抖音</button>
+              <button class="seg-btn active" data-v="shipinhao" type="button">视频号</button>
+              <button class="seg-btn" data-v="toutiao" type="button">头条</button>
+              <button class="seg-btn" data-v="xiaohongshu" type="button">小红书</button>
+            </div>
+          </div>
+
+          <div class="composer-row">
+            <label class="composer-switch">
+              <input type="checkbox" id="cSchedule" /> <span>定时发布</span>
+            </label>
+            <input class="field-input" id="cScheduleTime" type="datetime-local" style="display:none;" />
+          </div>
+
+          <div class="composer-actions">
+            <button class="btn-ghost" id="btnCopyPublish" type="button">复制发布文案</button>
+            <button class="btn-mini" id="btnSaveDraft" type="button">保存草稿</button>
+            <button class="btn-refresh" id="btnPublishNow" type="button">标记为已发布</button>
+          </div>
+          <div class="composer-tip">创作者中心暂不支持第三方直接上传。这里生成的标题+正文+话题可一键复制，去抖音创作者中心粘贴发布；发布平台按你的分发策略自动标注抖音/视频号优先。</div>
+        </div>
+
+        <!-- 内容管理：草稿 / 待发布 / 已发布 -->
+        <div class="chart-block">
+          <div class="chart-title">内容管理</div>
+          <div class="seg seg-tabs" id="pubTabs">
+            <button class="seg-btn active" data-v="draft" type="button">草稿箱 <b id="cntDraft">0</b></button>
+            <button class="seg-btn" data-v="scheduled" type="button">待发布 <b id="cntScheduled">0</b></button>
+            <button class="seg-btn" data-v="published" type="button">已发布 <b id="cntPublished">0</b></button>
+          </div>
+          <div class="list-wrap" id="pubList"></div>
+        </div>
+
+        <!-- 本周排期（参考） -->
+        <div class="chart-block">
+          <div class="chart-title">本周排期 · 抖音/视频号优先</div>
+          <div class="schedule" id="pubSchedule"></div>
+        </div>
+      </section>
+
+      <!-- ====== 页面：爆款热点 ====== -->
+      <section class="page" id="page-hot">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">爆款热点</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">当日抖音/同城/地产赛道热度榜</span>
+            </div>
+          </div>
+          <button class="btn-refresh" id="btnRefreshHot" type="button">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 4v4h-4"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 20v-4h4"/></svg>
+            换一批热点
+          </button>
+        </header>
+        <div class="page-body" id="hotBody"></div>
+      </section>
+
+      <!-- ====== 页面：项目管理 ====== -->
+      <section class="page" id="page-project">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">项目管理</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">选题拍摄项目 · 进度追踪 · 可编辑</span>
+            </div>
+          </div>
+          <button class="btn-refresh" id="btnAddProject" type="button">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            新建项目
+          </button>
+        </header>
+        <div class="add-panel" id="projectPanel" style="display:none;">
+          <div class="add-panel-title">项目编辑</div>
+          <div class="add-panel-fields">
+            <input class="field-input" id="pName" type="text" placeholder="项目名称（必填）" />
+            <select class="field-input" id="pStage">
+              <option value="构思">构思</option>
+              <option value="脚本">脚本</option>
+              <option value="素材">素材</option>
+              <option value="排期">排期</option>
+              <option value="拍摄中">拍摄中</option>
+              <option value="剪辑中">剪辑中</option>
+              <option value="已发布">已发布</option>
+            </select>
+            <input class="field-input" id="pProgress" type="number" min="0" max="100" placeholder="进度 0-100" />
+            <select class="field-input" id="pPlatform">
+              <option value="douyin">抖音</option>
+              <option value="shipinhao">视频号</option>
+              <option value="douyin+shipinhao">抖音 + 视频号</option>
+              <option value="douyin+toutiao">抖音 + 头条</option>
+              <option value="douyin+xiaohongshu">抖音 + 小红书</option>
+              <option value="toutiao">头条</option>
+              <option value="xiaohongshu">小红书</option>
+            </select>
+            <input class="field-input" id="pDue" type="date" />
+            <textarea id="pNote" class="paste-area" rows="2" placeholder="项目备注 / 内容大纲"></textarea>
+          </div>
+          <div class="add-panel-actions">
+            <button class="btn-mini" id="btnCancelProject" type="button">取消</button>
+            <button class="btn-refresh btn-small" id="btnSaveProject" type="button">保存项目</button>
+          </div>
+        </div>
+        <div class="page-body" id="projectBody"></div>
+      </section>
+
+      <!-- ====== 页面：数据统计 ====== -->
+      <section class="page" id="page-stats">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">数据统计</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">四平台汇总 · 抖音 + 视频号占比</span>
+            </div>
+          </div>
+        </header>
+        <div class="page-body" id="statsBody"></div>
+      </section>
+
+      <!-- ====== 页面：自我关怀 ====== -->
+      <section class="page" id="page-care">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">自我关怀</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">创作者状态 · 可持续输出</span>
+            </div>
+          </div>
+        </header>
+        <div class="page-body" id="careBody"></div>
+      </section>
+
+      <!-- ====== 页面：作业素材库 ====== -->
+      <section class="page" id="page-lib">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">作业素材库</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>已保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">对标博主素材 / 我的收藏</span>
+            </div>
+          </div>
+        </header>
+        <div class="page-body" id="libBody"></div>
+      </section>
+
+      <!-- ====== 页面：数据维护 ====== -->
+      <section class="page" id="page-maintain">
+        <header class="page-head">
+          <div class="head-titles">
+            <h1 class="page-title">数据维护</h1>
+            <div class="head-row">
+              <span class="save-status"><span class="dot"></span>本地保存</span>
+              <span class="dot-line">·</span>
+              <span class="date-text">填写你账号的真实数据，存浏览器本地</span>
+            </div>
+          </div>
+          <div class="head-actions">
+            <button class="btn-mini" id="btnExportMaintain" type="button">导出备份</button>
+            <button class="btn-mini" id="btnImportMaintain" type="button">导入备份</button>
+            <input type="file" id="fileImportMaintain" accept="application/json" style="display:none" />
+            <button class="btn-refresh" id="btnSaveMaintain" type="button">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+              保存数据
+            </button>
+          </div>
+        </header>
+
+        <div class="maint-note">
+          💡 这里的数据只存在你这台手机的浏览器里，刷新/重开 App 都在；换手机或清缓存会丢，记得用「导出备份」留存。作品数据请在「内容复盘」里增删改。
+        </div>
+
+        <div class="page-body" id="maintainBody"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
