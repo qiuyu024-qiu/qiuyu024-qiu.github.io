@@ -1486,6 +1486,18 @@ ${escapeHtml(item.script)}
     setTimeout(() => b.classList.remove("spin"), 700);
     renderHot();
   });
+
+  /* 腾讯文档选题库入口：在 PWA/手机浏览器内，target=_blank 有时会被拦截或静默失败。
+     改为强 JS 打开新窗口（同步阻止默认跳转），失败兜底为新标签页直跳。 */
+  $("#hotLibBanner").addEventListener("click", (e) => {
+    e.preventDefault();
+    const url = e.currentTarget.href;
+    const win = window.open(url, "_blank", "noopener,noreferrer");
+    if (!win) {
+      /* 兜底：直接 location 跳（浏览器拦截了弹窗时） */
+      window.location.href = url;
+    }
+  });
   $("#hotBody").addEventListener("click", (e) => {
     const b = e.target.closest("[data-adapt]");
     if (b) {
@@ -1830,10 +1842,10 @@ ${escapeHtml(item.script)}
     applyModelToGlobals(loadAccountOverrides());
   }
 
-  function maintField(field, platform, val, label, placeholder) {
+  function maintField(field, platform, val, label, placeholder, type) {
     return '<label class="maint-field"><span class="maint-field-label">' + escAttr(label) + '</span>' +
       '<input class="field-input" data-platform="' + escAttr(platform) + '" data-field="' + escAttr(field) +
-      '" value="' + escAttr(val) + '" placeholder="' + escAttr(placeholder || "") + '" /></label>';
+      '" type="' + escAttr(type || "text") + '" value="' + escAttr(val) + '" placeholder="' + escAttr(placeholder || "") + '" /></label>';
   }
 
   function renderMaintain() {
@@ -1844,7 +1856,31 @@ ${escapeHtml(item.script)}
     const statMap = {};
     stats.forEach(function (s) { statMap[s.platform] = s; });
 
-    let html = '<div class="maint-grid">';
+    /* === 首页核心指标（与首页共用 gbad_home_metrics_v1） === */
+    const plan = window.PLATFORM_PLAN || { items: [], primary: [], weeklyOriginal: 5 };
+    const primaryTotal = plan.items.filter(function (x) { return plan.primary.includes(x.key); })
+      .reduce(function (s, x) { return s + x.ratio; }, 0);
+    const homeDefaults = {
+      weeklyOriginal: plan.weeklyOriginal || 5,
+      primaryRatio: primaryTotal || 80,
+      platformsCount: accounts.length || 3,
+      pendingCount: (window.PUBLISH_PLAN || []).filter(function (p) { return p.status === "待拍"; }).length
+    };
+    const homeCur = loadHomeMetrics(homeDefaults);
+
+    let html = '';
+    html += '<div class="maint-card maint-card-home">';
+    html += '<div class="maint-card-head"><span class="maint-card-name">首页核心指标</span>' +
+      '<span class="maint-card-sub">gbad_home_metrics_v1</span></div>';
+    html += '<div class="maint-card-sub2">首页顶部 4 个卡片</div>';
+    html += maintField("home_weeklyOriginal", "_home", homeCur.weeklyOriginal, "每周原创视频（条）", "5", "number");
+    html += maintField("home_primaryRatio",   "_home", homeCur.primaryRatio,   "主阵地占比（%）", "80", "number");
+    html += maintField("home_platformsCount", "_home", homeCur.platformsCount, "在更平台（个）", "3", "number");
+    html += maintField("home_pendingCount",   "_home", homeCur.pendingCount,   "本周待拍（条）", "3", "number");
+    html += '<div class="maint-card-hint">修改后点顶部「保存数据」即可，首页会立刻反映。</div>';
+    html += '</div>';
+
+    html += '<div class="maint-grid">';
     accounts.forEach(function (a) {
       const st = statMap[a.platform] || {};
       html += '<div class="maint-card">';
@@ -1884,29 +1920,55 @@ ${escapeHtml(item.script)}
     if (_maintainInit) return;
     _maintainInit = true;
 
+    /* 保存：账号覆盖 + 首页核心指标 + 工作清单（作品清单可触发完整重新种子） */
     $("#btnSaveMaintain").addEventListener("click", function () {
-      const model = {};
       const mb = $("#maintainBody");
-      if (mb) mb.querySelectorAll("input[data-platform]").forEach(function (inp) {
+      /* 1. 账号覆盖（每个平台独立字段） */
+      const accountModel = {};
+      if (mb) mb.querySelectorAll("input[data-platform]:not([data-platform=\"_home\"])").forEach(function (inp) {
         const p = inp.dataset.platform, f = inp.dataset.field;
-        (model[p] = model[p] || {})[f] = inp.value.trim();
+        (accountModel[p] = accountModel[p] || {})[f] = inp.value.trim();
       });
-      try { localStorage.setItem(ACCOUNT_OVERRIDE_KEY, JSON.stringify(model)); } catch (e) {}
-      applyModelToGlobals(model);
+      try { localStorage.setItem(ACCOUNT_OVERRIDE_KEY, JSON.stringify(accountModel)); } catch (e) {}
+      applyModelToGlobals(accountModel);
+
+      /* 2. 首页核心指标 */
+      const homeObj = {};
+      if (mb) mb.querySelectorAll("input[data-platform=\"_home\"]").forEach(function (inp) {
+        const f = inp.dataset.field.replace(/^home_/, "");
+        homeObj[f] = Math.max(0, Math.floor(Number(inp.value) || 0));
+      });
+      try { localStorage.setItem(HOME_METRICS_KEY, JSON.stringify(homeObj)); } catch (e) {}
+
       renderHome(); renderMedia(); renderWorkTable(); renderStats(); renderAnalysis();
       const msg = $("#maintainMsg");
-      if (msg) { msg.textContent = "✓ 已保存，数据已更新"; msg.classList.add("show"); }
+      if (msg) { msg.textContent = "✓ 已保存，首页数据已更新"; msg.classList.add("show"); }
     });
 
+    /* 导出全部：扫所有 wb_/gbad_ 前缀的 localStorage 键，一个 JSON 全打包 */
     $("#btnExportMaintain").addEventListener("click", function () {
-      const model = loadAccountOverrides() || {};
-      const blob = new Blob([JSON.stringify(model, null, 2)], { type: "application/json" });
+      const dump = {};
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (!k) continue;
+          if (k.indexOf("wb_") === 0 || k.indexOf("gbad_") === 0) {
+            try { dump[k] = JSON.parse(localStorage.getItem(k)); }
+            catch (e) { dump[k] = localStorage.getItem(k); }
+          }
+        }
+      } catch (e) {}
+      const blob = new Blob([JSON.stringify(dump, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url; a.download = "探楼纪-账号数据.json"; a.click();
+      const ts = new Date().toISOString().replace(/[:T]/g, "-").slice(0, 16);
+      a.href = url; a.download = "探楼纪-全部数据-" + ts + ".json"; a.click();
       URL.revokeObjectURL(url);
+      const msg = $("#maintainMsg");
+      if (msg) { msg.textContent = "✓ 已导出 JSON（含账号/指标/作品/笔记等全部数据）"; msg.classList.add("show"); }
     });
 
+    /* 导入全部：从 JSON 一键恢复（先清空，再批量写入），不破坏当前会话视图 */
     $("#btnImportMaintain").addEventListener("click", function () { $("#fileImportMaintain").click(); });
     $("#fileImportMaintain").addEventListener("change", function (e) {
       const file = e.target.files && e.target.files[0];
@@ -1914,13 +1976,18 @@ ${escapeHtml(item.script)}
       const r = new FileReader();
       r.onload = function () {
         try {
-          const m = JSON.parse(r.result);
-          localStorage.setItem(ACCOUNT_OVERRIDE_KEY, JSON.stringify(m));
-          applyModelToGlobals(m);
-          renderMaintain(); renderHome(); renderMedia(); renderWorkTable(); renderStats(); renderAnalysis();
-          const msg = $("#maintainMsg");
-          if (msg) { msg.textContent = "✓ 导入成功"; msg.classList.add("show"); }
-        } catch (err) { alert("备份文件格式不对，无法导入"); }
+          const dump = JSON.parse(r.result);
+          if (typeof dump !== "object" || Array.isArray(dump)) throw new Error("not object");
+          /* 清空再写 */
+          Object.keys(dump).forEach(function (k) {
+            const v = dump[k];
+            if (v === null || v === undefined) return;
+            localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v));
+          });
+          /* 重新应用账号覆盖 + 重新渲染 */
+          applyAccountOverrides();
+          location.reload();
+        } catch (err) { alert("备份文件格式不对，无法导入：" + (err && err.message ? err.message : err)); }
       };
       r.readAsText(file);
       e.target.value = "";

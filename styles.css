@@ -1246,6 +1246,15 @@ button { font: inherit; }
   margin-top: 4px; font-size: 11px; font-weight: 600; color: var(--text-3);
   letter-spacing: .04em;
 }
+.maint-card-home {
+  margin: 12px 16px 16px;
+  background: linear-gradient(135deg, #fff7e6 0%, #fff2e0 100%);
+  border-color: #ffd591;
+}
+.maint-card-home .maint-card-name { color: #b85800; }
+.maint-card-hint {
+  margin-top: 8px; font-size: 11.5px; color: #8a6d3b; line-height: 1.45;
+}
 .maint-field { display: flex; flex-direction: column; gap: 4px; }
 .maint-field-label { font-size: 12px; color: var(--text-2); }
 .maint-field .field-input { padding: 8px 10px; font-size: 13px; }
@@ -1255,101 +1264,6 @@ button { font: inherit; }
 }
 .maint-foot-tip { font-size: 12.5px; color: #1a9e54; font-weight: 600; opacity: 0; transition: opacity .25s; }
 .maint-foot-tip.show { opacity: 1; }
-
-/* ============ 移动端：左侧固定竖向导航 + 右侧内容分栏 ============ */
-@media (max-width: 720px) {
-  :root { --mobile-nav: 88px; }
-
-  /* 整体改为「左窄栏 + 右内容」两列网格，网格天然保证左右不重叠 */
-  .app {
-    grid-template-columns: var(--mobile-nav) 1fr;
-    min-height: 100vh;
-  }
-
-  /* 左侧工具栏：固定的竖向导航（sticky 钉在左侧，自身可纵向滚动） */
-  .sidebar {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    width: var(--mobile-nav);
-    border-right: 1px solid var(--line);
-    border-bottom: 0;
-    padding: 14px 6px 22px;
-    gap: 14px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    z-index: 40;
-  }
-
-  /* 账号区竖排居中，窄栏隐藏副标题省竖向空间 */
-  .account {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 6px;
-    padding: 2px 2px 12px;
-  }
-  .account-info { text-align: center; }
-  .account-bio { display: none; }
-
-  .menu-group { gap: 2px; }
-  .menu-group-title {
-    text-align: center;
-    font-size: 9px;
-    padding: 9px 2px 4px;
-    letter-spacing: .03em;
-    color: var(--text-4);
-  }
-
-  /* 功能项：图标在上、文字在下，竖向居中，清晰可辨 */
-  .menu-item {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    height: auto;
-    padding: 9px 2px;
-    border-radius: 10px;
-  }
-  .menu-item .mi-icon { width: 20px; height: 20px; }
-  .menu-item .mi-label {
-    font-size: 10px;
-    white-space: normal;
-    text-align: center;
-    line-height: 1.2;
-  }
-
-  /* 当前选中项加左侧高亮条，便于确认所在功能区 */
-  .menu-item.active { position: relative; background: var(--bg-active); }
-  .menu-item.active::before {
-    content: "";
-    position: absolute;
-    left: 0; top: 7px; bottom: 7px;
-    width: 3px; border-radius: 3px;
-    background: var(--accent);
-  }
-
-  /* 右侧内容区：min-width:0 + overflow:hidden 防止长内容撑破网格列，保证不与左栏重叠 */
-  .main {
-    padding: 16px 14px 56px;
-    min-width: 0;
-    overflow-x: hidden;
-  }
-  .page { min-width: 0; }
-  .page-head {
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  /* 切换时右侧内容从右轻微滑入，平滑更新 */
-  @keyframes pageIn {
-    from { opacity: 0; transform: translateX(12px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  .page { animation: pageIn 0.28s ease both; }
-}
 
 
 /* ============ 爆款热点 - 腾讯文档选题库入口 ============ */
