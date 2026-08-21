@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>探楼纪 · 每日热点</title>
+    <style>
+      * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+      body { margin: 0; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f6f8; color: #1a1a1a; }
+      .header { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #ececec; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
+      .header h1 { font-size: 18px; margin: 0; font-weight: 800; }
+      .header .sub { font-size: 12px; color: #8a8f98; }
+      .refresh { border: none; background: #2d6cdf; color: #fff; border-radius: 20px; padding: 8px 16px; font-size: 14px; font-weight: 600; }
+      .refresh:active { opacity: .8; }
+      .list { padding: 12px; max-width: 640px; margin: 0 auto; }
+      .card { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 6px rgba(0,0,0,.05); }
+      .meta { display: flex; justify-content: space-between; font-size: 12px; color: #8a8f98; margin-bottom: 6px; }
+      .meta .cat { color: #c0392b; font-weight: 600; }
+      .title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+      .summary { font-size: 14px; color: #444; line-height: 1.5; }
+      .tags { margin-top: 8px; }
+      .tags span { font-size: 12px; color: #2d6cdf; margin-right: 8px; }
+      .err { color: #c0392b; text-align: center; padding: 20px; }
+      .empty { text-align: center; color: #8a8f98; margin-top: 40px; }
+      .end { text-align: center; color: #b0b4bb; font-size: 12px; padding: 12px 0 32px; }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div>
+        <h1>探楼纪 · 每日热点</h1>
+        <div class="sub">每日 09:00 更新 · 最新置顶 · 历史完整保留</div>
+      </div>
+      <button class="refresh" id="btn">刷新</button>
+    </div>
+    <div class="list" id="list">
+      <div class="empty">加载中…</div>
+    </div>
+    <div style="text-align:center;padding:16px">
+      <button class="refresh" id="more" style="display:none">加载更多历史</button>
+    </div>
+    <div id="sentinel" style="height:1px"></div>
+
+    <script type="module" src="./app.mjs"></script>
+  </body>
+</html>
