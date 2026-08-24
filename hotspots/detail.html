@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>探楼纪 · 二创文案</title>
+    <style>
+      * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+      body { margin: 0; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f6f8; color: #1a1a1a; }
+      .header { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #ececec; padding: 12px 16px; display: flex; align-items: center; gap: 12px; z-index: 10; }
+      .back { border: none; background: #eef1f6; color: #2d6cdf; border-radius: 20px; padding: 8px 16px; font-size: 14px; font-weight: 600; }
+      .back:active { opacity: .7; }
+      .header h1 { font-size: 17px; margin: 0; font-weight: 800; }
+      .wrap { padding: 14px; max-width: 640px; margin: 0 auto; }
+      .origin { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 1px 6px rgba(0,0,0,.05); }
+      .origin .lab { font-size: 12px; color: #8a8f98; margin-bottom: 8px; }
+      .origin .cat { display: inline-block; font-size: 12px; color: #c0392b; font-weight: 600; background: #fdecea; border-radius: 6px; padding: 2px 8px; margin-bottom: 8px; }
+      .origin .otitle { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
+      .origin .osummary { font-size: 14px; color: #666; line-height: 1.6; }
+      .origin .tags { margin-top: 10px; }
+      .origin .tags span { font-size: 12px; color: #2d6cdf; margin-right: 8px; }
+      .copy { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 6px rgba(0,0,0,.05); position: relative; }
+      .copy .lab { font-size: 12px; color: #8a8f98; margin-bottom: 10px; display: flex; justify-content: space-between; }
+      .copy .body { font-size: 16px; line-height: 1.9; white-space: pre-wrap; word-break: break-word; }
+      .copybtn { width: 100%; margin-top: 16px; border: none; background: #2d6cdf; color: #fff; border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; }
+      .copybtn:active { opacity: .85; }
+      .copybtn.done { background: #27ae60; }
+      .note { font-size: 12px; color: #b0b4bb; text-align: center; margin: 14px 0 30px; }
+      .err { color: #c0392b; text-align: center; padding: 40px 16px; }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <button class="back" onclick="location.href='./index.html'">← 返回</button>
+      <h1>二创文案</h1>
+    </div>
+    <div class="wrap" id="wrap">
+      <div class="err">加载中…</div>
+    </div>
+
+    <script type="module">
+      import { } from './store.mjs';
+
+      const HS_URL = `data/hotspots.json?t=${Date.now()}`;
+      const CP_URL = `data/copies.json?t=${Date.now()}`;
+
+      function esc(s) {
+        return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      }
+      function fmt(iso) {
+        const d = new Date(iso);
+        const p = (n) => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+      }
+
+      // 无匹配文案时的客户端兜底生成（保证未来每日新增选题也能出文案）
+      function fallback(h) {
+        const tags = (h.tags || []).map((t) => '#' + t).join(' ');
+        return `你知道「${h.title}」意味着什么吗？\n${h.summary}\n说白了，这事跟每个在深圳打工人、每个打算选址的老板都有关。\n你品品，商办市场的风向，往往就藏在这些细节里。\n${tags}`;
+      }
+
+      const id = new URLSearchParams(location.search).get('id');
+      if (!id) { document.getElementById('wrap').innerHTML = '<div class="err">缺少热点 id</div>'; }
+
+      async function init() {
+        try {
+          const [hsRes, cpRes] = await Promise.all([
+            fetch(HS_URL, { headers: { Accept: 'application/json' } }),
+            fetch(CP_URL, { headers: { Accept: 'application/json' } }),
+          ]);
+          if (!hsRes.ok) throw new Error('HTTP ' + hsRes.status);
+          const list = await hsRes.json();
+          const copies = cpRes.ok ? await cpRes.json() : {};
+          const h = Array.isArray(list) ? list.find((x) => x.id === id) : null;
+          if (!h) { document.getElementById('wrap').innerHTML = '<div class="err">未找到该热点</div>'; return; }
+
+          const copy = (copies[h.title] || fallback(h)).replace(/\r/g, '');
+          const tagsHtml = (h.tags || []).map((t) => `<span>#${esc(t)}</span>`).join('');
+          const charCount = [...copy.replace(/\n/g, '')].length;
+
+          document.getElementById('wrap').innerHTML = `
+            <div class="origin">
+              <div class="lab">原热点 · ${esc(fmt(h.generatedAt))}</div>
+              <div class="cat">${esc(h.category)}</div>
+              <div class="otitle">${esc(h.title)}</div>
+              <div class="osummary">${esc(h.summary)}</div>
+              <div class="tags">${tagsHtml}</div>
+            </div>
+            <div class="copy">
+              <div class="lab"><span>二创文案（账号口吻）</span><span>${charCount} 字</span></div>
+              <div class="body" id="copybody">${esc(copy)}</div>
+              <button class="copybtn" id="copybtn" onclick="copyText()">复制文案</button>
+            </div>
+            <div class="note">点击「复制文案」即可直接发布到抖音 / 视频号 / 小红书</div>
+          `;
+
+          window.copyText = async function () {
+            const btn = document.getElementById('copybtn');
+            try {
+              await navigator.clipboard.writeText(copy);
+              btn.textContent = '已复制 ✅';
+              btn.classList.add('done');
+              setTimeout(() => { btn.textContent = '复制文案'; btn.classList.remove('done'); }, 1800);
+            } catch {
+              // 降级：选区复制
+              const r = document.createRange();
+              r.selectNode(document.getElementById('copybody'));
+              const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+              btn.textContent = '请手动复制（Ctrl/Cmd+C）';
+            }
+          };
+        } catch (e) {
+          document.getElementById('wrap').innerHTML = `<div class="err">⚠ 加载失败：${esc(e.message)}</div>`;
+        }
+      }
+      if (id) init();
+    </script>
+  </body>
+</html>

@@ -44,11 +44,12 @@ function esc(s) {
   }[c]));
 }
 function card(h) {
-  return `<div class="card">
+  return `<div class="card" data-id="${esc(h.id)}">
     <div class="meta"><span>${esc(fmt(h.generatedAt))}</span><span class="cat">${esc(h.category)}</span></div>
     <div class="title">${esc(h.title)}</div>
     <div class="summary">${esc(h.summary)}</div>
     <div class="tags">${(h.tags || []).map((t) => `<span>#${esc(t)}</span>`).join('')}</div>
+    <div class="go">二创文案 →</div>
   </div>`;
 }
 
@@ -99,6 +100,14 @@ async function load(reset) {
 
 btn.addEventListener('click', () => load(true));
 moreBtn.addEventListener('click', () => renderPage(false));
+
+// 点击热点卡片 → 进入二创文案详情页
+listEl.addEventListener('click', (e) => {
+  const card = e.target.closest('.card');
+  if (card && card.dataset.id) {
+    location.href = `./detail.html?id=${encodeURIComponent(card.dataset.id)}`;
+  }
+});
 
 // 触底自动加载更早历史（IntersectionObserver 监听哨兵元素）
 const io = new IntersectionObserver((entries) => {
